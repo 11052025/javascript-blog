@@ -1,0 +1,26 @@
+{
+  "name": "learning-git-2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+  "start": "browser-sync start --server --files 'css/*.css' '*.html'",
+  "init-project": "mkdir css js scss && echo > js/script.js && echo > css/style.css && echo > scss/style.scss"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/11052025/puste-repozytorium.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/11052025/puste-repozytorium/issues"
+  },
+  "homepage": "https://github.com/11052025/puste-repozytorium#readme",
+  "description": "",
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "html-validate": "^9.7.1"
+  }
+}
+
