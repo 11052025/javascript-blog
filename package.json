@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "start": "browser-sync start --server --files 'css/*.css' '*.html'",
+  "watch:browsersync": "browser-sync start --server --files \"css/*.css\" \"*.html\" \"js/*.js\"",
   "init-project": "mkdir css js scss && echo > js/script.js && echo > css/style.css && echo > scss/style.scss"
 },
   "repository": {
