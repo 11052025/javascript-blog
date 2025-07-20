@@ -1,40 +1,56 @@
-'use strict';
+const optArticleSelector = '.post',
+  optTitleSelector = '.post-title',
+  optTitleListSelector = '.titles';
 
-function titleClickHandler(event){
-  event.preventDefault(); // [DONE] blokuje domyślne zachowanie linków
-  const clickedElement = this;
-  console.log('Link was clicked!');
-  console.log('clickedElement:', clickedElement);
+function generateTitleLinks() {
+  console.log('generateTitleLinks działa');
+  const titleList = document.querySelector(optTitleListSelector);
+  titleList.innerHTML = '';
 
-  /* [DONE] remove class 'active' from all article links */
-  const activeLinks = document.querySelectorAll('.titles a.active');
-  for(let activeLink of activeLinks){
-    activeLink.classList.remove('active');
+  const articles = document.querySelectorAll(optArticleSelector);
+
+  for (let article of articles) {
+    const articleId = article.getAttribute('id');
+    const titleElement = article.querySelector(optTitleSelector);
+    const articleTitle = titleElement.innerHTML;
+
+    const linkHTML = `<li><a href="#${articleId}"><span>${articleTitle}</span></a></li>`;
+    titleList.innerHTML += linkHTML;
   }
-
-  /* [DONE] add class 'active' to the clicked link */
-  clickedElement.classList.add('active');
-
-  /* [DONE] remove class 'active' from all articles */
-  const activeArticles = document.querySelectorAll('.posts article.active');
-  for(let activeArticle of activeArticles){
-    activeArticle.classList.remove('active');
-  }
-
-  /* [DONE] get 'href' attribute from the clicked link */
-  const articleSelector = clickedElement.getAttribute('href');
-
-  /* [DONE] find the correct article using the selector (value of 'href' attribute) */
-  const targetArticle = document.querySelector(articleSelector);
-
-  /* [DONE] add class 'active' to the correct article */
-  targetArticle.classList.add('active');
 }
 
-const links = document.querySelectorAll('.titles a');
-for(let link of links){
-  link.addEventListener('click', titleClickHandler);
+function addClickListenersToTitleLinks() {
+  const links = document.querySelectorAll('.titles a');
+
+  for (let link of links) {
+    link.addEventListener('click', function(event) {
+      event.preventDefault();
+
+      // Usuwamy active z obecnie aktywnego artykułu i linku
+      const activeArticle = document.querySelector('.post.active');
+      if (activeArticle) activeArticle.classList.remove('active');
+
+      const activeLink = document.querySelector('.titles a.active');
+      if (activeLink) activeLink.classList.remove('active');
+
+      // Dodajemy active do klikniętego linku
+      this.classList.add('active');
+
+      // Pobieramy ID artykułu z href
+      const articleId = this.getAttribute('href').substring(1);
+      const targetArticle = document.getElementById(articleId);
+
+      if (targetArticle) targetArticle.classList.add('active');
+    });
+  }
 }
+
+// Wywołujemy najpierw generowanie linków, potem dodajemy obsługę kliknięć
+generateTitleLinks();
+addClickListenersToTitleLinks();
+
+
+
 
 
 
