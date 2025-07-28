@@ -11,8 +11,8 @@ function generateTitleLinks() {
 
   for (let article of articles) {
     const articleId = article.getAttribute('id');
-    const titleElement = article.querySelector(optTitleSelector);
-    const articleTitle = titleElement.innerHTML;
+    // Pobieramy tytuł w jednej linii:
+    const articleTitle = article.querySelector(optTitleSelector).innerHTML;
 
     const linkHTML = `<li><a href="#${articleId}"><span>${articleTitle}</span></a></li>`;
     titleList.innerHTML += linkHTML;
@@ -49,20 +49,6 @@ function addClickListenersToTitleLinks() {
 generateTitleLinks();
 addClickListenersToTitleLinks();
 
-function processArticleById(id) {
-  const articleId = id;
-  const article = document.getElementById(articleId);
-
-  if (article) {
-    console.log('Przetwarzam artykuł o ID:', articleId);
-    // inne operacje
-  } else {
-    console.log('Nie znaleziono artykułu o ID:', articleId);
-  }
-}
-
-// Przykładowe wywołanie
-processArticleById('article-1');
 
 
 
