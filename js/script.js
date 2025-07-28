@@ -11,10 +11,11 @@ function generateTitleLinks() {
 
   for (let article of articles) {
     const articleId = article.getAttribute('id');
-    // Pobieramy tytuł w jednej linii:
     const articleTitle = article.querySelector(optTitleSelector).innerHTML;
 
-    const linkHTML = `<li><a href="#${articleId}"><span>${articleTitle}</span></a></li>`;
+    const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
+    console.log(linkHTML);
+
     titleList.innerHTML += linkHTML;
   }
 }
@@ -48,6 +49,7 @@ function addClickListenersToTitleLinks() {
 // Wywołujemy najpierw generowanie linków, potem dodajemy obsługę kliknięć
 generateTitleLinks();
 addClickListenersToTitleLinks();
+
 
 
 
