@@ -49,8 +49,20 @@ function addClickListenersToTitleLinks() {
 generateTitleLinks();
 addClickListenersToTitleLinks();
 
+function processArticleById(id) {
+  const articleId = id;
+  const article = document.getElementById(articleId);
 
+  if (article) {
+    console.log('Przetwarzam artykuł o ID:', articleId);
+    // inne operacje
+  } else {
+    console.log('Nie znaleziono artykułu o ID:', articleId);
+  }
+}
 
+// Przykładowe wywołanie
+processArticleById('article-1');
 
 
 
