@@ -16,14 +16,36 @@ function generateTitleLinks() {
 
     const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
     html = html + linkHTML;
-
-    console.log(html);
   }
 
   titleList.innerHTML = html;
+
+  // Dopiero teraz dodajemy event listenery do świeżo wygenerowanych linków
+  const links = document.querySelectorAll('.titles a');
+
+  for (let link of links) {
+    link.addEventListener('click', function(event) {
+      event.preventDefault();
+
+      const activeArticle = document.querySelector('.post.active');
+      if (activeArticle) activeArticle.classList.remove('active');
+
+      const activeLink = document.querySelector('.titles a.active');
+      if (activeLink) activeLink.classList.remove('active');
+
+      this.classList.add('active');
+
+      const articleId = this.getAttribute('href').substring(1);
+      const targetArticle = document.getElementById(articleId);
+
+      if (targetArticle) targetArticle.classList.add('active');
+    });
+  }
 }
 
+// Wywołujemy funkcję generującą linki wraz z przypięciem event listenerów
 generateTitleLinks();
+
 
 
 
