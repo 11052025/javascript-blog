@@ -3,11 +3,18 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "watch": "npm-run-all build:* build-dev -p watch:*",
-    "test:js": "eslint js/",
-    "test": "npm-run-all test:*",
-    "init-project": "mkdir css js scss && echo > js/script.js && echo > css/style.css && echo > scss/style.scss"
-  },
+  "build:html": "html-validate index.html",
+  "build:css": "echo 'Budowanie CSS...'", 
+  "build:js": "echo 'Budowanie JS...'", 
+  "build-dev": "echo 'Zadanie build-dev...'", 
+  "watch:html": "nodemon -e html -x \"npm run build:html\"",
+  "watch:css": "nodemon -e css -x \"npm run build:css\"",
+  "watch:js": "nodemon -e js -x \"npm run build:js\"",
+  "watch": "npm-run-all build:* build-dev -p watch:*",
+  "test:js": "eslint js/",
+  "test": "npm-run-all test:*",
+  "init-project": "mkdir css js scss && echo > js/script.js && echo > css/style.css && echo > scss/style.scss"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/11052025/puste-repozytorium.git"
