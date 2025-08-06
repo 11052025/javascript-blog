@@ -1,6 +1,7 @@
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
-  optTitleListSelector = '.titles';
+  optTitleListSelector = '.titles',
+  optArticleTagsSelector = '.post-tags .list';
 
 function generateTitleLinks() {
   const titleList = document.querySelector(optTitleListSelector);
@@ -54,7 +55,7 @@ function generateTags() {
   for (let article of articles) {
 
     /* find tags wrapper */
-    const tagWrapper = article.querySelector('.post-tags ul');
+    const tagWrapper = article.querySelector(optArticleTagsSelector);
 
     /* make html variable with empty string */
     let html = '';
