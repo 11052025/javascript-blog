@@ -48,44 +48,31 @@ function generateTitleLinks() {
 generateTitleLinks();
 
 function generateTags() {
-  /* find all articles */
-  const articles = document.querySelectorAll('.post');
+  const articles = document.querySelectorAll(optArticleSelector);
 
-  /* START LOOP: for every article: */
   for (let article of articles) {
-
-    /* find tags wrapper */
+    // Znajdź wrapper tagów (to <ul> z klasami .post-tags .list)
     const tagWrapper = article.querySelector(optArticleTagsSelector);
 
-    /* make html variable with empty string */
+    // Zmienna na HTML linków do tagów
     let html = '';
 
-    /* get tags from data-tags attribute */
-    const tags = article.getAttribute('data-tags');
+    // Pobierz tagi z atrybutu data-tags i podziel na tablicę
+    const articleTags = article.getAttribute('data-tags');
+    const tagsArray = articleTags.split(' ');
 
-    /* split tags into array */
-    const tagsArray = tags.split(' ');
-
-    /* START LOOP: for each tag */
+    // Dla każdego tagu wygeneruj link i dodaj go do html
     for (let tag of tagsArray) {
-
-      /* generate HTML of the link */
       const linkHTML = `<li><a href="#tag-${tag}">${tag}</a></li>`;
-
-      /* add generated code to html variable */
       html += linkHTML;
     }
-    /* END LOOP: for each tag */
 
-    /* insert HTML of all the links into the tags wrapper */
+    // Wstaw wygenerowane linki do wrappera tagów
     tagWrapper.innerHTML = html;
   }
-  /* END LOOP: for every article: */
 }
 
 generateTags();
-
-
 
 
 
