@@ -3,11 +3,11 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list';
 
-function generateTitleLinks() {
+function generateTitleLinks(customSelector = '') {
   const titleList = document.querySelector(optTitleListSelector);
   titleList.innerHTML = '';
 
-  const articles = document.querySelectorAll(optArticleSelector);
+  const articles = document.querySelectorAll(optArticleSelector + customSelector);
 
   let html = '';
 
@@ -16,12 +16,11 @@ function generateTitleLinks() {
     const articleTitle = article.querySelector(optTitleSelector).innerHTML;
 
     const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
-    html = html + linkHTML;
+    html += linkHTML;
   }
 
   titleList.innerHTML = html;
 
-  // Dopiero teraz dodajemy event listenery do świeżo wygenerowanych linków
   const links = document.querySelectorAll('.titles a');
 
   for (let link of links) {
@@ -44,35 +43,61 @@ function generateTitleLinks() {
   }
 }
 
-// Wywołujemy funkcję generującą linki wraz z przypięciem event listenerów
 generateTitleLinks();
 
 function generateTags() {
   const articles = document.querySelectorAll(optArticleSelector);
 
   for (let article of articles) {
-    // Znajdź wrapper tagów (to <ul> z klasami .post-tags .list)
     const tagWrapper = article.querySelector(optArticleTagsSelector);
-
-    // Zmienna na HTML linków do tagów
     let html = '';
 
-    // Pobierz tagi z atrybutu data-tags i podziel na tablicę
     const articleTags = article.getAttribute('data-tags');
     const tagsArray = articleTags.split(' ');
 
-    // Dla każdego tagu wygeneruj link i dodaj go do html
     for (let tag of tagsArray) {
       const linkHTML = `<li><a href="#tag-${tag}">${tag}</a></li>`;
       html += linkHTML;
     }
 
-    // Wstaw wygenerowane linki do wrappera tagów
     tagWrapper.innerHTML = html;
   }
 }
 
 generateTags();
+
+function tagClickHandler(event){
+  event.preventDefault();
+  const clickedElement = this;
+
+  const href = clickedElement.getAttribute('href');
+  const tag = href.replace('#tag-', '');
+
+  const activeTags = document.querySelectorAll('a.active[href^="#tag-"]');
+
+  for(let activeTag of activeTags){
+    activeTag.classList.remove('active');
+  }
+
+  const tagLinks = document.querySelectorAll(`a[href="${href}"]`);
+
+  for(let tagLink of tagLinks){
+    tagLink.classList.add('active');
+  }
+
+  generateTitleLinks(`[data-tags~="${tag}"]`);
+}
+
+function addClickListenersToTags(){
+  const links = document.querySelectorAll('a[href^="#tag-"]');
+
+  for(let link of links){
+    link.addEventListener('click', tagClickHandler);
+  }
+}
+
+addClickListenersToTags();
+
 
 
 
