@@ -14,7 +14,6 @@ function generateTitleLinks(customSelector = '') {
   const titleList = document.querySelector(optTitleListSelector);
   titleList.innerHTML = '';
 
-  // Find all articles matching the combined selector
   const articles = document.querySelectorAll(optArticleSelector + customSelector);
   let html = '';
 
@@ -28,7 +27,6 @@ function generateTitleLinks(customSelector = '') {
 
   titleList.innerHTML = html;
 
-  // Add click listeners for article title links
   const links = document.querySelectorAll('.titles a');
   for (let link of links) {
     link.addEventListener('click', function(event) {
@@ -51,9 +49,9 @@ function generateTitleLinks(customSelector = '') {
 
 generateTitleLinks();
 
-// Function: generate tags for each article and collect unique tags
+// Function: generate tags for each article and collect unique tags with counts
 function generateTags() {
-  let allTags = [];
+  let allTags = {}; // zmiana z tablicy na obiekt
 
   const articles = document.querySelectorAll(optArticleSelector);
   for (let article of articles) {
@@ -67,17 +65,18 @@ function generateTags() {
       const linkHTML = `<li><a href="#tag-${tag}">${tag}</a></li>`;
       html += linkHTML;
 
-      if (allTags.indexOf(linkHTML) === -1) {
-        allTags.push(linkHTML);
+      // zliczanie tagów
+      if (!allTags[tag]) {
+        allTags[tag] = 1;
+      } else {
+        allTags[tag]++;
       }
     }
 
     tagWrapper.innerHTML = html;
   }
 
-  // Insert unique tags into sidebar
-  const tagList = document.querySelector(optTagsListSelector);
-  tagList.innerHTML = allTags.join(' ');
+  console.log(allTags); // tymczasowo podgląd w konsoli
 }
 
 generateTags();
@@ -103,7 +102,6 @@ function tagClickHandler(event) {
   generateTitleLinks(`[data-tags~="${tag}"]`);
 }
 
-// Add event listeners to all tag links
 function addClickListenersToTags() {
   const links = document.querySelectorAll('a[href^="#tag-"]');
   for (let link of links) {
@@ -148,7 +146,6 @@ function authorClickHandler(event) {
   generateTitleLinks(`[data-author="${author}"]`);
 }
 
-// Add event listeners to all author links
 function addClickListenersToAuthors() {
   const authorLinks = document.querySelectorAll('a[href^="#author-"]');
   for (let link of authorLinks) {
@@ -157,6 +154,7 @@ function addClickListenersToAuthors() {
 }
 
 addClickListenersToAuthors();
+
 
 
 
