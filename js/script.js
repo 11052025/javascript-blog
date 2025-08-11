@@ -59,7 +59,7 @@ generateTitleLinks();
 
 // Function: generate tags for each article and count tag occurrences
 function generateTags() {
-  /* [NEW] create a new object allTags to store tag counts */
+  /* Create a new object allTags to store tag counts */
   let allTags = {};
 
   // Loop through each article
@@ -77,13 +77,11 @@ function generateTags() {
       const linkHTML = `<li><a href="#tag-${tag}">${tag}</a></li>`;
       html += linkHTML;
 
-      // Count tag occurrences
+      // Count tag occurrences in allTags object
       if (!allTags[tag]) {
-        // If the tag does not exist yet, set its count to 1
-        allTags[tag] = 1;
+        allTags[tag] = 1; // If tag does not exist yet, set count to 1
       } else {
-        // If it already exists, increment its count
-        allTags[tag]++;
+        allTags[tag]++;   // If tag exists, increment its count
       }
     }
 
@@ -91,7 +89,10 @@ function generateTags() {
     tagWrapper.innerHTML = html;
   }
 
-  // Temporary console output for checking tag counts
+  // Temporarily disable this line as per task instruction
+  // tagList.innerHTML = allTags.join(' ');
+
+  // Check contents of allTags in console
   console.log(allTags);
 }
 
