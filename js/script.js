@@ -79,8 +79,10 @@ function generateTags() {
 
       // Count tag occurrences
       if (!allTags[tag]) {
+        // If the tag does not exist yet, set its count to 1
         allTags[tag] = 1;
       } else {
+        // If it already exists, increment its count
         allTags[tag]++;
       }
     }
@@ -178,6 +180,7 @@ function addClickListenersToAuthors() {
 }
 
 addClickListenersToAuthors();
+
 
 
 
