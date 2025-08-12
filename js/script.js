@@ -89,10 +89,10 @@ function generateTags() {
     tagWrapper.innerHTML = html;
   }
 
-  // Temporarily disable this line as per task instruction
+  // Temporarily disable inserting tags into sidebar
   // tagList.innerHTML = allTags.join(' ');
 
-  // Check contents of allTags in console
+  // Log object to check tag counts
   console.log(allTags);
 }
 
