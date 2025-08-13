@@ -6,36 +6,64 @@ const optArticleSelector = '.post',
   optArticleAuthorSelector = '.post-author',
   optTagsListSelector = '.tags.list'; // Sidebar tag list selector
 
+/* [NEW] Function to calculate min and max tag counts */
+function calculateTagsParams(tags) {
+  const params = { min: null, max: null };
+
+  for (let tag in tags) {
+    if (params.min === null || tags[tag] < params.min) {
+      params.min = tags[tag];
+    }
+    if (params.max === null || tags[tag] > params.max) {
+      params.max = tags[tag];
+    }
+  }
+
+  return params;
+}
+
 // Function: generate list of article titles (with optional filtering)
 function generateTitleLinks(customSelector = '') {
+  console.log('customSelector:', customSelector);
+  console.log('Combined selector:', optArticleSelector + customSelector);
+
   const titleList = document.querySelector(optTitleListSelector);
   titleList.innerHTML = '';
 
+  // Find all articles matching the combined selector
   const articles = document.querySelectorAll(optArticleSelector + customSelector);
   let html = '';
 
   for (let article of articles) {
     const articleId = article.getAttribute('id');
     const articleTitle = article.querySelector(optTitleSelector).innerHTML;
+
+    // Create HTML for the article link
     const linkHTML = `<li><a href="#${articleId}"><span>${articleTitle}</span></a></li>`;
     html += linkHTML;
   }
 
+  // Insert links into the title list
   titleList.innerHTML = html;
 
+  // Add click listeners for each article link
   const links = document.querySelectorAll('.titles a');
   for (let link of links) {
     link.addEventListener('click', function(event) {
       event.preventDefault();
 
+      // Remove active class from currently active article
       const activeArticle = document.querySelector('.post.active');
       if (activeArticle) activeArticle.classList.remove('active');
 
+      // Remove active class from currently active link
       const activeLink = document.querySelector('.titles a.active');
       if (activeLink) activeLink.classList.remove('active');
 
+      // Add active class to clicked link
       this.classList.add('active');
 
+      // Show the corresponding article
       const articleId = this.getAttribute('href').substring(1);
       const targetArticle = document.getElementById(articleId);
       if (targetArticle) targetArticle.classList.add('active');
@@ -45,65 +73,47 @@ function generateTitleLinks(customSelector = '') {
 
 generateTitleLinks();
 
-// Function: calculate min and max tag counts
-function calculateTagsParams(tags) {
-  const params = { min: Infinity, max: 0 };
-
-  for (let tag in tags) {
-    if (tags[tag] > params.max) {
-      params.max = tags[tag];
-    }
-    if (tags[tag] < params.min) {
-      params.min = tags[tag];
-    }
-  }
-  return params;
-}
-
-// Function: calculate CSS class for a tag based on its count
-function calculateTagClass(count, params) {
-  const normalizedCount = count - params.min;
-  const normalizedMax = params.max - params.min;
-  const percentage = normalizedMax ? normalizedCount / normalizedMax : 0;
-  const classNumber = Math.floor(percentage * 4 + 1); // from 1 to 5
-  return `tag-size-${classNumber}`;
-}
-
 // Function: generate tags for each article and count tag occurrences
 function generateTags() {
+  /* Create a new object allTags to store tag counts */
   let allTags = {};
 
+  // Loop through each article
   const articles = document.querySelectorAll(optArticleSelector);
   for (let article of articles) {
     const tagWrapper = article.querySelector(optArticleTagsSelector);
     let html = '';
 
+    // Get tags from data-tags attribute
     const articleTags = article.getAttribute('data-tags');
     const tagsArray = articleTags.split(' ');
 
+    // Loop through each tag
     for (let tag of tagsArray) {
       const linkHTML = `<li><a href="#tag-${tag}">${tag}</a></li>`;
       html += linkHTML;
 
+      // Count tag occurrences in allTags object
       if (!allTags[tag]) {
         allTags[tag] = 1; // If tag does not exist yet, set count to 1
       } else {
         allTags[tag]++;   // If tag exists, increment its count
       }
     }
+
+    // Insert tags HTML into the article
     tagWrapper.innerHTML = html;
   }
 
-  const tagList = document.querySelector(optTagsListSelector);
+  /* [NEW] Get min and max from allTags */
   const tagsParams = calculateTagsParams(allTags);
+  console.log('tagsParams:', tagsParams);
+
+  /* [NEW] create variable for all links HTML code */
   let allTagsHTML = '';
 
-  for (let tag in allTags) {
-    const className = calculateTagClass(allTags[tag], tagsParams);
-    allTagsHTML += `<li><a class="${className}" href="#tag-${tag}">${tag} (${allTags[tag]})</a></li>`;
-  }
-
-  tagList.innerHTML = allTagsHTML;
+  // Check contents of allTags in console
+  console.log(allTags);
 }
 
 generateTags();
@@ -113,19 +123,23 @@ function tagClickHandler(event) {
   event.preventDefault();
   const clickedElement = this;
 
+  // Get tag name from href
   const href = clickedElement.getAttribute('href');
   const tag = href.replace('#tag-', '');
 
+  // Remove active class from all active tag links
   const activeTags = document.querySelectorAll('a.active[href^="#tag-"]');
   for (let activeTag of activeTags) {
     activeTag.classList.remove('active');
   }
 
+  // Add active class to all matching tag links
   const tagLinks = document.querySelectorAll(`a[href="${href}"]`);
   for (let tagLink of tagLinks) {
     tagLink.classList.add('active');
   }
 
+  // Filter articles by selected tag
   generateTitleLinks(`[data-tags~="${tag}"]`);
 }
 
@@ -158,19 +172,23 @@ function authorClickHandler(event) {
   event.preventDefault();
   const clickedElement = this;
 
+  // Get author name from href
   const href = clickedElement.getAttribute('href');
   const author = href.replace('#author-', '');
 
+  // Remove active class from all active author links
   const activeAuthorLinks = document.querySelectorAll('a.active[href^="#author-"]');
   for (let link of activeAuthorLinks) {
     link.classList.remove('active');
   }
 
+  // Add active class to all matching author links
   const authorLinks = document.querySelectorAll(`a[href="${href}"]`);
   for (let link of authorLinks) {
     link.classList.add('active');
   }
 
+  // Filter articles by selected author
   generateTitleLinks(`[data-author="${author}"]`);
 }
 
@@ -183,6 +201,7 @@ function addClickListenersToAuthors() {
 }
 
 addClickListenersToAuthors();
+
 
 
 
