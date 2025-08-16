@@ -10,7 +10,7 @@ const optTagsListSelector = '.tags.list';
 const optCloudClassCount = 5;
 const optCloudClassPrefix = 'tag-size-';
 
-// Calculate min and max number of tag occurrences
+// Calculate min and max tag counts
 function calculateTagsParams(tags) {
   const params = { max: 0, min: 999999 };
   for (let tag in tags) {
@@ -20,7 +20,7 @@ function calculateTagsParams(tags) {
   return params;
 }
 
-// Calculate CSS class for a tag based on its count
+// Calculate tag class for tag cloud
 function calculateTagClass(count, params) {
   const normalizedCount = count - params.min;
   const normalizedMax = params.max - params.min;
@@ -72,7 +72,7 @@ function generateTitleLinks(customSelector = '') {
 
 generateTitleLinks();
 
-// Generate tags for each article and the tag cloud
+// Generate tags for each article and tag cloud
 function generateTags() {
   let allTags = {};
   const articles = document.querySelectorAll(optArticleSelector);
@@ -100,7 +100,7 @@ function generateTags() {
 
   for (let tag in allTags) {
     const tagClass = calculateTagClass(allTags[tag], tagsParams);
-    allTagsHTML += `<li><a href="#tag-${tag}" class="${tagClass}">${tag} (${allTags[tag]})</a></li>`;
+    allTagsHTML += `<li><a href="#tag-${tag}" class="${tagClass}">${tag}</a></li>`;
   }
 
   const tagList = document.querySelector(optTagsListSelector);
@@ -184,6 +184,7 @@ function addClickListenersToAuthors() {
 }
 
 addClickListenersToAuthors();
+
 
 
 
